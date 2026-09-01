@@ -2,59 +2,97 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Input Kotak Baru - Hendra Media Tech</title>
+    <title>Admin Dashboard - Hendra Media Tech</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body style="background:#0b132b; color:#fff;" class="py-5">
-    <div class="container" style="max-width: 650px;">
+    <div class="container" style="max-width: 750px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="text-warning fw-bold mb-0">➕ Input Kotak Layanan Baru</h4>
+            <h4 class="text-warning fw-bold mb-0"><i class="fa-solid fa-sliders me-2"></i>Admin Dashboard</h4>
             <div>
-                <a href="/" class="btn btn-sm btn-outline-light me-1">Lihat Web</a>
+                <a href="/" class="btn btn-sm btn-outline-light me-1">&larr; Lihat Web</a>
                 <a href="/admin/logout" class="btn btn-sm btn-danger">Logout</a>
             </div>
         </div>
 
-        <div class="card p-4 bg-dark text-white border-secondary mb-4">
-            <form method="POST">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} py-2 small mb-3">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- FORM 1: TAMBAH PRODUK / KOTAK BARU -->
+        <div class="card p-4 bg-dark text-white border-secondary mb-4 shadow">
+            <h5 class="text-warning fw-bold mb-3"><i class="fa-solid fa-plus-circle me-2"></i>Tambah Kotak Layanan Baru</h5>
+            <form method="POST" action="/admin/tambah">
+                <div class="mb-3">
+                    <label class="form-label small text-muted">Pilih Kategori Layanan</label>
+                    <select name="kategori" class="form-select bg-secondary text-white border-secondary" required>
+                        {% for kat in kategori_list %}
+                        <option value="{{ kat.id }}">{{ kat.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label class="form-label small text-muted">Judul Layanan / Kelas</label>
-                    <input type="text" name="judul" class="form-control bg-secondary text-white" placeholder="Contoh: Undangan Digital" required>
+                    <input type="text" name="judul" class="form-control bg-secondary text-white border-secondary" placeholder="Contoh: Undangan Digital Premium" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small text-muted">Kata Penawaran / Deskripsi Produk</label>
-                    <textarea name="penawaran" class="form-control bg-secondary text-white" rows="3" placeholder="Tuliskan kata-kata penawaran produk..." required></textarea>
+                    <textarea name="penawaran" class="form-control bg-secondary text-white border-secondary" rows="3" placeholder="Tuliskan kata-kata penawaran produk..." required></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small text-muted">Link Demo Web (URL Contoh)</label>
-                    <input type="url" name="link_demo" class="form-control bg-secondary text-white" placeholder="https://..." required>
+                    <input type="url" name="link_demo" class="form-control bg-secondary text-white border-secondary" placeholder="https://..." required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small text-muted">Link Kontak WA / Pemesanan (Opsional)</label>
-                    <input type="url" name="link_pesan" class="form-control bg-secondary text-white" placeholder="https://wa.me/...">
+                    <input type="url" name="link_pesan" class="form-control bg-secondary text-white border-secondary" placeholder="https://wa.me/...">
                 </div>
-                <div class="mb-3">
-    <label class="form-label small text-muted">Pilih Kategori</label>
-    <select name="kategori" class="form-select bg-secondary text-white">
-        <option value="Pendidikan">Pendidikan & Literasi</option>
-        <option value="Bisnis">Bisnis & Operasional UMKM</option>
-        <option value="Acara">Acara & Undangan Digital</option>
-        <option value="Tools">Alat Bantu & Otomasi</option>
-    </select>
-</div>
-
-                <button type="submit" class="btn btn-warning w-100 fw-bold text-dark">Simpan Kotak</button>
+                <button type="submit" class="btn btn-warning w-100 fw-bold text-dark">Simpan Kotak Layanan</button>
             </form>
+        </div>
+
+        <!-- FORM 2: KELOLA KATEGORI (TAMBAH & HAPUS) -->
+        <div class="card p-4 bg-dark text-white border-secondary mb-4 shadow">
+            <h5 class="text-warning fw-bold mb-3"><i class="fa-solid fa-tags me-2"></i>Kelola Kategori</h5>
+            
+            <form method="POST" action="/admin/kategori/tambah" class="row g-2 mb-4">
+                <div class="col-md-6">
+                    <input type="text" name="nama" class="form-control form-control-sm bg-secondary text-white border-secondary" placeholder="Nama Kategori (Contoh: 🏥 Layanan Kesehatan)" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="id_kat" class="form-control form-control-sm bg-secondary text-white border-secondary" placeholder="ID Kategori Unik (Contoh: Kesehatan)" required>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success btn-sm w-100 fw-bold">Tambah</button>
+                </div>
+            </form>
+
+            <h6 class="small text-muted fw-bold mb-2">Daftar Kategori Aktif:</h6>
+            <div class="list-group list-group-flush">
+                {% for kat in kategori_list %}
+                <div class="list-group-item bg-secondary text-white d-flex justify-content-between align-items-center mb-1 rounded">
+                    <div>
+                        <strong>{{ kat.nama }}</strong> <small class="text-warning ms-2">(ID: {{ kat.id }})</small>
+                    </div>
+                    <form action="/admin/kategori/hapus/{{ kat.id }}" method="POST" class="mb-0" onsubmit="return confirm('Hapus kategori ini?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger border-0"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
         {% if json_result %}
         <div class="card p-3 bg-dark border-warning">
             <h6 class="text-warning fw-bold mb-2">📋 Hasil JSON Terbaru:</h6>
-            <p class="small text-muted mb-2">Jika di Vercel kotaknya tidak tersimpan otomatis saat restart, cukup salin teks di bawah ini dan perbarui file <code>katalog.json</code> kamu di GitHub:</p>
-            <textarea class="form-control bg-black text-warning small font-monospace" rows="8" readonly>{{ json_result }}</textarea>
+            <textarea class="form-control bg-black text-warning small font-monospace" rows="6" readonly>{{ json_result }}</textarea>
         </div>
         {% endif %}
     </div>
 </body>
 </html>
-
