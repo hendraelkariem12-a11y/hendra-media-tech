@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "judul": "Undangan Digital Premium",
+    "penawaran": "Jasa pembuatan web undangan pernikahan digital elegan, responsif, dan praktis dengan fitur musik, RSVP, dan peta lokasi.",
+    "link_demo": "https://example.com/undangan-demo",
+    "link_pesan": "https://wa.me/6281234567890"
+  },
+  {
+    "id": 2,
+    "judul": "Aplikasi Kasir & Laporan Keuangan",
+    "penawaran": "Sistem POS Kasir berbasis web modern untuk UMKM, toko, atau kafe. Dilengkapi cetak struk dan analisis penjualan.",
+    "link_demo": "https://example.com/pos-demo",
+    "link_pesan": "https://wa.me/6281234567890"
+  }
+]
