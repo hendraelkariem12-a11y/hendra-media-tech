@@ -1,9 +1,9 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'hendra-media-tech-secret-key-2026'
 
 # Path file penyimpanan data JSON
@@ -26,6 +26,24 @@ def save_katalog(data):
 ADMIN_USER = "admin"
 ADMIN_PASS_HASH = generate_password_hash("hendra123")
 
+# ==================================================
+# ROUTE UNTUK MENAMPILKAN LOGO DI VERCEL
+# ==================================================
+@app.route('/logo.jpg')
+def serve_logo_jpg():
+    return send_from_directory('static', 'logo.jpg')
+
+@app.route('/logo.png')
+def serve_logo_png():
+    return send_from_directory('static', 'logo.png')
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
+
+# ==================================================
+# ROUTE UTAMA APLIKASI
+# ==================================================
 @app.route('/')
 def home():
     kotaks = load_katalog()
@@ -94,13 +112,6 @@ def tambah_kotak():
         json_result = json.dumps(kotaks, indent=2, ensure_ascii=False)
 
     return render_template('tambah.html', json_result=json_result)
-@app.route('/logo.png')
-def serve_logo_png():
-    return send_from_directory('static', 'logo.png')
-
-@app.route('/logo.jpg')
-def serve_logo_jpg():
-    return send_from_directory('static', 'logo.jpg')
 
 if __name__ == '__main__':
     app.run(debug=True)
