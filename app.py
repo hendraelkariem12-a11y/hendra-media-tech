@@ -36,6 +36,14 @@ KATALOG_DEFAULT = [
         "link_pesan": "https://wa.me/6282122900593"
     },
     {
+        "id": 4,
+        "judul": "Web Portofolio Jasa / Company Profile UMKM",
+        "kategori": "Bisnis",
+        "penawaran": "Landing page profesional untuk studio foto, jasa jahit, bengkel, arsitek, atau salon agar dipercaya oleh calon klien online.",
+        "link_demo": "https://demo-company-profile-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
+    },
+    {
         "id": 3,
         "judul": "Web Pencatatan Utang & Keuangan Harian",
         "kategori": "Bisnis",
