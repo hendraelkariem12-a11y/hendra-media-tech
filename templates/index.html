@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hendra Media Tech - Official Digital Ecosystem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0b132b;
+            --card-dark: #1c2541;
+            --gold: #b38728;
+            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7);
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .brand-logo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold);
+            padding: 3px;
+            background: #fff;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            color: #fcf6ba;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .card-kotak {
+            background-color: var(--card-dark);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-kotak::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--gold-gradient);
+        }
+        .card-kotak:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+        }
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            border-radius: 30px;
+        }
+        .btn-gold:hover {
+            opacity: 0.9;
+            color: #000;
+        }
+        .btn-outline-gold {
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-weight: 600;
+            border-radius: 30px;
+        }
+        .btn-outline-gold:hover {
+            background-color: var(--gold);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Logo Induk -->
+    <div class="container py-5 text-center">
+        <img src="/static/logo.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" alt="Hendra Media Tech" class="brand-logo mb-3">
+        <h1 class="brand-title h2 mb-1">HENDRA MEDIA TECH</h1>
+        <p class="text-muted small text-uppercase" style="letter-spacing: 3px;">Innovative Web Solutions & Digital Ecosystems</p>
+        <hr class="border-secondary my-4" style="max-width: 300px; margin: 0 auto;">
+
+        <!-- Grid Dynamic Kotak Layanan -->
+        <div class="row g-4 mt-3 text-start">
+            {% for k in kotaks %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-kotak h-100 p-3">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fa-solid fa-cube text-warning fs-4 me-2"></i>
+                            <h5 class="card-title text-warning fw-bold mb-0">{{ k.judul }}</h5>
+                        </div>
+                        <p class="card-text text-light small my-3 flex-grow-1" style="line-height: 1.6;">
+                            {{ k.penawaran }}
+                        </p>
+                        
+                        <div class="mt-auto">
+                            <a href="{{ k.link_demo }}" target="_blank" class="btn btn-outline-gold w-100 mb-2 btn-sm">
+                                <i class="fa-solid fa-eye me-1"></i> Lihat Contoh (Demo)
+                            </a>
+                            {% if k.link_pesan %}
+                            <a href="{{ k.link_pesan }}" target="_blank" class="btn btn-gold w-100 btn-sm">
+                                <i class="fa-brands fa-whatsapp me-1"></i> Pesan / Gunakan Jasa
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Belum ada kotak layanan yang ditambahkan.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer class="mt-auto py-3 text-center border-top border-secondary small text-muted">
+        Powered by <strong>Hendra Media Tech</strong> — All Rights Reserved
+    </footer>
+
+</body>
+</html>
 
