@@ -93,6 +93,7 @@ def tambah_kotak():
     json_result = None
     if request.method == 'POST':
         judul = request.form.get('judul', '').strip()
+        kategori = request.form.get('kategori', 'Bisnis').strip() # PERBAIKAN: Menangkap Input Kategori
         penawaran = request.form.get('penawaran', '').strip()
         link_demo = request.form.get('link_demo', '').strip()
         link_pesan = request.form.get('link_pesan', '').strip()
@@ -102,6 +103,7 @@ def tambah_kotak():
         new_item = {
             "id": len(kotaks) + 1,
             "judul": judul,
+            "kategori": kategori, # PERBAIKAN: Menyimpan Kategori
             "penawaran": penawaran,
             "link_demo": link_demo,
             "link_pesan": link_pesan
