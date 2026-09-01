@@ -1,13 +1,16 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
+import io
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'hendra-media-tech-secret-key-2026'
 
-KATALOG_FILE = os.path.join(os.path.dirname(__file__), 'katalog.json')
-KATEGORI_FILE = os.path.join(os.path.dirname(__file__), 'kategori.json')
+# Gunakan direktori /tmp/ khusus Vercel Serverless
+KATALOG_FILE = '/tmp/katalog.json'
+KATEGORI_FILE = '/tmp/kategori.json'
 
 # Kategori bawaan jika file belum ada
 KATEGORI_DEFAULT = [
@@ -17,18 +20,39 @@ KATEGORI_DEFAULT = [
     {"id": "Tools", "nama": "🛠️ Alat Bantu & Otomasi (Tools)"}
 ]
 
+# Data katalog awal
+KATALOG_DEFAULT = [
+    {
+        "id": 1,
+        "judul": "Aplikasi Kasir POS & Manajer Stok Toko",
+        "kategori": "Bisnis",
+        "penawaran": "Sistem POS Kasir berbasis web modern untuk UMKM, warung, toko kelontong, atau kafe. Dilengkapi fitur cetak struk nota, manajemen stok otomatis dengan peringatan stok menipis, serta laporan omzet penjualan harian.",
+        "link_demo": "https://demo-pos-kasir-ten.vercel.app/",
+        "link_pesan": "https://wa.me/6281234567890"
+    }
+]
+
 def load_json(filepath, default_value):
-    if os.path.exists(filepath):
+    if not os.path.exists(filepath):
+        # Inisialisasi file default di /tmp/
         try:
-            with open(filepath, 'r', encoding='utf-8') as f:
-                return json.load(f)
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(default_value, f, ensure_ascii=False, indent=2)
         except Exception:
-            return default_value
-    return default_value
+            pass
+        return default_value
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return default_value
 
 def save_json(filepath, data):
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
 
 ADMIN_USER = "admin"
 ADMIN_PASS_HASH = generate_password_hash("hendra123")
@@ -53,7 +77,7 @@ def serve_static(filename):
 # ==================================================
 @app.route('/')
 def home():
-    kotaks = load_json(KATALOG_FILE, [])
+    kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
     kategori_list = load_json(KATEGORI_FILE, KATEGORI_DEFAULT)
     return render_template('index.html', kotaks=kotaks, kategori_list=kategori_list, is_admin=session.get('is_admin'))
 
@@ -109,7 +133,7 @@ def tambah_kotak():
         link_demo = request.form.get('link_demo', '').strip()
         link_pesan = request.form.get('link_pesan', '').strip()
 
-        kotaks = load_json(KATALOG_FILE, [])
+        kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
         
         new_item = {
             "id": len(kotaks) + 1,
@@ -123,6 +147,7 @@ def tambah_kotak():
         kotaks.insert(0, new_item)
         save_json(KATALOG_FILE, kotaks)
         json_result = json.dumps(kotaks, indent=2, ensure_ascii=False)
+        flash('Kotak layanan berhasil ditambahkan!', 'success')
 
     kategori_list = load_json(KATEGORI_FILE, KATEGORI_DEFAULT)
     return render_template('tambah.html', json_result=json_result, kategori_list=kategori_list)
@@ -140,7 +165,6 @@ def tambah_kategori():
     
     if nama and id_kat:
         kategori_list = load_json(KATEGORI_FILE, KATEGORI_DEFAULT)
-        # Cek agar ID tidak duplikat
         if not any(k['id'] == id_kat for k in kategori_list):
             kategori_list.append({"id": id_kat, "nama": nama})
             save_json(KATEGORI_FILE, kategori_list)
@@ -160,6 +184,68 @@ def hapus_kategori(id_kat):
     save_json(KATEGORI_FILE, kategori_list)
     flash('Kategori berhasil dihapus!', 'info')
     
+    return redirect(url_for('tambah_kotak'))
+
+# ==================================================
+# ROUTE BACKUP & RESTORE DATA (JSON)
+# ==================================================
+@app.route('/admin/backup/<pilihan>')
+def backup_data(pilihan):
+    if not session.get('is_admin'):
+        return redirect(url_for('login'))
+    
+    if pilihan == 'katalog':
+        filename = KATALOG_FILE
+        download_name = 'backup_katalog_hendra.json'
+    elif pilihan == 'kategori':
+        filename = KATEGORI_FILE
+        download_name = 'backup_kategori_hendra.json'
+    else:
+        return redirect(url_for('tambah_kotak'))
+
+    if os.path.exists(filename):
+        return send_file(filename, as_attachment=True, download_name=download_name, mimetype='application/json')
+    else:
+        flash('File data tidak ditemukan untuk dibackup.', 'danger')
+        return redirect(url_for('tambah_kotak'))
+
+@app.route('/admin/restore/<pilihan>', methods=['POST'])
+def restore_data(pilihan):
+    if not session.get('is_admin'):
+        return redirect(url_for('login'))
+    
+    if 'file_json' not in request.files:
+        flash('Tidak ada file yang diunggah.', 'warning')
+        return redirect(url_for('tambah_kotak'))
+    
+    file = request.files['file_json']
+    if file.filename == '':
+        flash('Nama file kosong.', 'warning')
+        return redirect(url_for('tambah_kotak'))
+
+    if pilihan == 'katalog':
+        target_file = KATALOG_FILE
+    elif pilihan == 'kategori':
+        target_file = KATEGORI_FILE
+    else:
+        return redirect(url_for('tambah_kotak'))
+
+    if file and file.filename.endswith('.json'):
+        try:
+            # Baca isi file dan validasi apakah JSON valid
+            stream = io.BytesIO(file.read())
+            data = json.load(stream)
+            
+            # Simpan ke folder /tmp/
+            save_json(target_file, data)
+            flash(f'Data {pilihan} berhasil direstore!', 'success')
+        except json.JSONDecodeError:
+            flash('Gagal restore. File bukan format JSON yang valid.', 'danger')
+        except Exception as e:
+            flash(f'Terjadi kesalahan: {str(e)}', 'danger')
+    else:
+        flash('Hanya diperbolehkan mengunggah file .json.', 'danger')
+
     return redirect(url_for('tambah_kotak'))
 
 if __name__ == '__main__':
