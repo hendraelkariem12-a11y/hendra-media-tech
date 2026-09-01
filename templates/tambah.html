@@ -19,7 +19,10 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }} py-2 small mb-3">{{ message }}</div>
+              <div class="alert alert-{{ category }} py-2 small mb-3 alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
             {% endfor %}
           {% endif %}
         {% endwith %}
@@ -56,7 +59,7 @@
             </form>
         </div>
 
-        <!-- FORM 2: KELOLA KATEGORI (TAMBAH & HAPUS) -->
+        <!-- FORM 2: KELOLA KATEGORI -->
         <div class="card p-4 bg-dark text-white border-secondary mb-4 shadow">
             <h5 class="text-warning fw-bold mb-3"><i class="fa-solid fa-tags me-2"></i>Kelola Kategori</h5>
             
@@ -65,7 +68,7 @@
                     <input type="text" name="nama" class="form-control form-control-sm bg-secondary text-white border-secondary" placeholder="Nama Kategori (Contoh: 🏥 Layanan Kesehatan)" required>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="id_kat" class="form-control form-control-sm bg-secondary text-white border-secondary" placeholder="ID Kategori Unik (Contoh: Kesehatan)" required>
+                    <input type="text" name="id_kat" class="form-control form-control-sm bg-secondary text-white border-secondary" placeholder="ID Unik (Contoh: Kesehatan)" required>
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-success btn-sm w-100 fw-bold">Tambah</button>
@@ -73,26 +76,57 @@
             </form>
 
             <h6 class="small text-muted fw-bold mb-2">Daftar Kategori Aktif:</h6>
-            <div class="list-group list-group-flush">
+            <div class="list-group list-group-flush mb-2" style="max-height: 200px; overflow-y: auto;">
                 {% for kat in kategori_list %}
-                <div class="list-group-item bg-secondary text-white d-flex justify-content-between align-items-center mb-1 rounded">
+                <div class="list-group-item bg-secondary text-white d-flex justify-content-between align-items-center mb-1 rounded py-1 px-2 small">
                     <div>
-                        <strong>{{ kat.nama }}</strong> <small class="text-warning ms-2">(ID: {{ kat.id }})</small>
+                        {{ kat.nama }} <small class="text-warning ms-1">(ID: {{ kat.id }})</small>
                     </div>
-                    <form action="/admin/kategori/hapus/{{ kat.id }}" method="POST" class="mb-0" onsubmit="return confirm('Hapus kategori ini?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger border-0"><i class="fa-solid fa-trash"></i></button>
+                    <form action="/admin/kategori/hapus/{{ kat.id }}" method="POST" class="mb-0" onsubmit="return confirm('Hapus kategori ini? Kotak layanan di dalamnya mungkin tidak akan muncul.');">
+                        <button type="submit" class="btn btn-sm btn-link text-danger p-0 border-0"><i class="fa-solid fa-trash-can"></i></button>
                     </form>
                 </div>
                 {% endfor %}
             </div>
         </div>
 
-        {% if json_result %}
-        <div class="card p-3 bg-dark border-warning">
-            <h6 class="text-warning fw-bold mb-2">📋 Hasil JSON Terbaru:</h6>
-            <textarea class="form-control bg-black text-warning small font-monospace" rows="6" readonly>{{ json_result }}</textarea>
+        <!-- SECTION 3: BACKUP & RESTORE DATA -->
+        <div class="card p-4 bg-dark text-white border-warning mb-4 shadow">
+            <h5 class="text-warning fw-bold mb-1"><i class="fa-solid fa-database me-2"></i>Backup & Restore Data</h5>
+            <p class="small text-muted mb-3">Karena Vercel menggunakan folder sementara, harap backup data JSON Anda secara berkala ke komputer lokal.</p>
+            
+            <div class="row g-3">
+                <!-- Backup -->
+                <div class="col-md-6 border-end border-secondary">
+                    <h6 class="fw-bold"><i class="fa-solid fa-download me-1 text-success"></i> Backup (Unduh)</h6>
+                    <div class="d-grid gap-2">
+                        <a href="/admin/backup/katalog" class="btn btn-sm btn-outline-success">Unduh JSON Katalog</a>
+                        <a href="/admin/backup/kategori" class="btn btn-sm btn-outline-success">Unduh JSON Kategori</a>
+                    </div>
+                </div>
+                <!-- Restore -->
+                <div class="col-md-6">
+                    <h6 class="fw-bold"><i class="fa-solid fa-upload me-1 text-info"></i> Restore (Unggah)</h6>
+                    
+                    <form action="/admin/restore/katalog" method="POST" enctype="multipart/form-data" class="mb-2">
+                        <div class="input-group input-group-sm">
+                            <input type="file" name="file_json" class="form-control form-control-sm bg-secondary text-white" accept=".json" required>
+                            <button type="submit" class="btn btn-info fw-bold text-dark" onsubmit="return confirm('Restore katalog akan menimpa data saat ini. Lanjut?');">Restore Katalog</button>
+                        </div>
+                    </form>
+
+                    <form action="/admin/restore/kategori" method="POST" enctype="multipart/form-data">
+                        <div class="input-group input-group-sm">
+                            <input type="file" name="file_json" class="form-control form-control-sm bg-secondary text-white" accept=".json" required>
+                            <button type="submit" class="btn btn-info fw-bold text-dark" onsubmit="return confirm('Restore kategori akan menimpa data saat ini. Lanjut?');">Restore Kategori</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        {% endif %}
+
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
