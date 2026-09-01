@@ -20,7 +20,36 @@ KATEGORI_DEFAULT = [
 ]
 
 # PERBAIKAN: Dibuat kosong agar jika dihapus tidak muncul otomatis lagi
-KATALOG_DEFAULT = []
+KATALOG_DEFAULT = [
+    # Data katalog permanen (Tidak akan hilang walau Vercel di-reset)
+KATALOG_DEFAULT = [
+    {
+        "id": 1,
+        "judul": "Sistem Kasir (POS) & Manajer Stok Toko",
+        "kategori": "Bisnis",
+        "penawaran": "Pencatatan transaksi penjualan harian, cetak struk via Bluetooth, analisis keuntungan, dan pengingat stok menipis untuk warung/toko kelontong/kafe.",
+        "link_demo": "https://demo-pos-kasir-ten.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
+    },
+    {
+        "id": 2,
+        "judul": "Web Restoran / Cafe dengan Menu QR Code",
+        "kategori": "Bisnis",
+        "penawaran": "Pelanggan tinggal scan QR code di meja untuk lihat menu, pilih makanan, dan kirim pesanan otomatis ke WhatsApp kasir/dapur.",
+        "link_demo": "https://demo-menu-qr-resto.vercel.app/",  # Sesuaikan dengan link vercel demo resto milikmu
+        "link_pesan": "https://wa.me/6282122900593"
+    },
+    {
+        "id": 3,
+        "judul": "Web Pencatatan Utang & Keuangan Harian",
+        "kategori": "Bisnis",
+        "penawaran": "Pencatatan arus kas masuk/keluar harian, piutang pelanggan, serta fitur generate rekap laporan keuangan bulanan format PDF.",
+        "link_demo": "https://demo-buku-kas-hendra.vercel.app/", # Sesuaikan dengan link vercel demo buku kas milikmu
+        "link_pesan": "https://wa.me/6282122900593"
+    }
+]
+
+]
 
 def load_json(filepath, default_value):
     if not os.path.exists(filepath):
