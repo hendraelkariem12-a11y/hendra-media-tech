@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Kotak Baru - Hendra Media Tech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#0b132b; color:#fff;" class="py-5">
+    <div class="container" style="max-width: 650px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="text-warning fw-bold mb-0">➕ Input Kotak Layanan Baru</h4>
+            <div>
+                <a href="/" class="btn btn-sm btn-outline-light me-1">Lihat Web</a>
+                <a href="/admin/logout" class="btn btn-sm btn-danger">Logout</a>
+            </div>
+        </div>
+
+        <div class="card p-4 bg-dark text-white border-secondary mb-4">
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label small text-muted">Judul Layanan / Kelas</label>
+                    <input type="text" name="judul" class="form-control bg-secondary text-white" placeholder="Contoh: Undangan Digital" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small text-muted">Kata Penawaran / Deskripsi Produk</label>
+                    <textarea name="penawaran" class="form-control bg-secondary text-white" rows="3" placeholder="Tuliskan kata-kata penawaran produk..." required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small text-muted">Link Demo Web (URL Contoh)</label>
+                    <input type="url" name="link_demo" class="form-control bg-secondary text-white" placeholder="https://..." required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small text-muted">Link Kontak WA / Pemesanan (Opsional)</label>
+                    <input type="url" name="link_pesan" class="form-control bg-secondary text-white" placeholder="https://wa.me/...">
+                </div>
+                <button type="submit" class="btn btn-warning w-100 fw-bold text-dark">Simpan Kotak</button>
+            </form>
+        </div>
+
+        {% if json_result %}
+        <div class="card p-3 bg-dark border-warning">
+            <h6 class="text-warning fw-bold mb-2">📋 Hasil JSON Terbaru:</h6>
+            <p class="small text-muted mb-2">Jika di Vercel kotaknya tidak tersimpan otomatis saat restart, cukup salin teks di bawah ini dan perbarui file <code>katalog.json</code> kamu di GitHub:</p>
+            <textarea class="form-control bg-black text-warning small font-monospace" rows="8" readonly>{{ json_result }}</textarea>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
 
