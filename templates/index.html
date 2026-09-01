@@ -101,11 +101,20 @@
         .btn-gold:hover { opacity: 0.9; color: #000; }
         .btn-outline-gold {
             border: 1px solid var(--gold);
-            color: var(--gold);
+            color: #fcf6ba; /* Warna emas terang agar terbaca jelas */
             font-weight: 600;
             border-radius: 30px;
         }
         .btn-outline-gold:hover { background-color: var(--gold); color: #000; }
+
+        /* PERBAIKAN KONTRAS TEKS AKAN JELAS */
+        .text-sub-light {
+            color: #cbd5e1 !important; /* Abu-abu terang sangat jelas */
+        }
+        .text-empty-category {
+            color: #94a3b8 !important; /* Terbaca jelas tapi tetap halus */
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -130,7 +139,7 @@
         <div class="text-center">
             <img src="/logo.jpg" onerror="this.src='/logo.png'" alt="Hendra Media Tech" class="brand-logo mb-3">
             <h1 class="brand-title h3 mb-1">HENDRA MEDIA TECH</h1>
-            <p class="small text-uppercase fw-bold mt-1" style="letter-spacing: 2px; color: #cbd5e1 !important;">
+            <p class="small text-uppercase fw-bold mt-1 text-sub-light" style="letter-spacing: 2px;">
                 INNOVATIVE WEB SOLUTIONS & DIGITAL ECOSYSTEMS
             </p>
             
@@ -140,10 +149,10 @@
             <div class="showcase-card p-4 text-start mb-5">
                 <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
                     <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill"><i class="fa-solid fa-star me-1"></i> PORTAL KARYA UTAMA</span>
-                    <small class="text-muted">Masterpiece Digital</small>
+                    <small class="text-sub-light">Masterpiece Digital</small>
                 </div>
                 <h3 class="fw-bold text-warning mb-2" style="font-family:'Cinzel', serif;">📖 Ruang Literasi Hendra</h3>
-                <p class="small text-light mb-3" style="line-height: 1.6;">
+                <p class="small text-sub-light mb-3" style="line-height: 1.6;">
                     Platform arsip digital resmi karya tulis, buku, jurnal refleksi, dan modul pembelajaran karya Dede Suhendra. Dilengkapi fitur PDF Reader, Text-to-Speech (Suara), dan Manajemen Naskah Terstruktur.
                 </p>
                 <a href="https://web-catatan-buku.up.railway.app" target="_blank" class="btn btn-gold btn-sm px-4">
@@ -154,7 +163,7 @@
             <!-- SECTION 2: TEKS PENAWARAN JASA -->
             <div class="text-center mb-4">
                 <h4 class="fw-bold text-warning mb-1"><i class="fa-solid fa-store me-2"></i>Katalog Produk & Jasa Web</h4>
-                <p class="text-muted small">Dijual web dengan fitur menarik untuk memudahkan aktivitas dan bisnis kalian.</p>
+                <p class="text-sub-light small">Dijual web dengan fitur menarik untuk memudahkan aktivitas dan bisnis kalian.</p>
             </div>
 
             <!-- SECTION 3: KATALOG DINAMIS PER KATEGORI -->
@@ -176,7 +185,7 @@
                                         <i class="fa-solid fa-cube text-warning fs-5 me-2"></i>
                                         <h6 class="card-title text-warning fw-bold mb-0">{{ k.judul }}</h6>
                                     </div>
-                                    <p class="card-text text-light small my-2 flex-grow-1" style="line-height: 1.5; font-size: 13px;">
+                                    <p class="card-text text-sub-light small my-2 flex-grow-1" style="line-height: 1.5; font-size: 13px;">
                                         {{ k.penawaran }}
                                     </p>
                                     <div class="mt-auto pt-2">
@@ -196,7 +205,7 @@
                     {% endfor %}
 
                     {% if not ns.found %}
-                    <div class="text-muted small fst-italic p-2">Belum ada layanan di kategori ini.</div>
+                    <div class="text-empty-category small p-2">Belum ada layanan di kategori ini.</div>
                     {% endif %}
                 </div>
             </div>
@@ -205,8 +214,8 @@
         </div>
     </div>
 
-    <footer class="mt-auto py-3 text-center border-top border-secondary small text-muted">
-        Powered by <strong>Hendra Media Tech</strong> — All Rights Reserved
+    <footer class="mt-auto py-3 text-center border-top border-secondary small text-sub-light">
+        Powered by <strong class="text-warning">Hendra Media Tech</strong> — All Rights Reserved
     </footer>
 
 </body>
