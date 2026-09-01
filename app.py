@@ -3,7 +3,6 @@ import json
 import io
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'hendra-media-tech-secret-key-2026'
@@ -34,7 +33,6 @@ KATALOG_DEFAULT = [
 
 def load_json(filepath, default_value):
     if not os.path.exists(filepath):
-        # Inisialisasi file default di /tmp/
         try:
             with open(filepath, 'w', encoding='utf-8') as f:
                 json.dump(default_value, f, ensure_ascii=False, indent=2)
@@ -135,8 +133,11 @@ def tambah_kotak():
 
         kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
         
+        # Generator ID berbasis Timestamp/Max ID unik
+        new_id = max([k.get('id', 0) for k in kotaks], default=0) + 1
+        
         new_item = {
-            "id": len(kotaks) + 1,
+            "id": new_id,
             "judul": judul,
             "kategori": kategori,
             "penawaran": penawaran,
@@ -149,8 +150,24 @@ def tambah_kotak():
         json_result = json.dumps(kotaks, indent=2, ensure_ascii=False)
         flash('Kotak layanan berhasil ditambahkan!', 'success')
 
+    kotaks_list = load_json(KATALOG_FILE, KATALOG_DEFAULT)
     kategori_list = load_json(KATEGORI_FILE, KATEGORI_DEFAULT)
-    return render_template('tambah.html', json_result=json_result, kategori_list=kategori_list)
+    return render_template('tambah.html', json_result=json_result, kategori_list=kategori_list, kotaks_list=kotaks_list)
+
+# ==================================================
+# ROUTE HAPUS KOTAK LAYANAN
+# ==================================================
+@app.route('/admin/kotak/hapus/<int:kotak_id>', methods=['POST'])
+def hapus_kotak(kotak_id):
+    if not session.get('is_admin'):
+        return redirect(url_for('login'))
+    
+    kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
+    kotaks = [k for k in kotaks if k.get('id') != kotak_id]
+    save_json(KATALOG_FILE, kotaks)
+    
+    flash('Kotak layanan berhasil dihapus!', 'info')
+    return redirect(url_for('tambah_kotak'))
 
 # ==================================================
 # ROUTE KELOLA KATEGORI (TAMBAH & HAPUS)
@@ -232,11 +249,8 @@ def restore_data(pilihan):
 
     if file and file.filename.endswith('.json'):
         try:
-            # Baca isi file dan validasi apakah JSON valid
             stream = io.BytesIO(file.read())
             data = json.load(stream)
-            
-            # Simpan ke folder /tmp/
             save_json(target_file, data)
             flash(f'Data {pilihan} berhasil direstore!', 'success')
         except json.JSONDecodeError:
