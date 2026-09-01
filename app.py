@@ -19,17 +19,8 @@ KATEGORI_DEFAULT = [
     {"id": "Tools", "nama": "🛠️ Alat Bantu & Otomasi (Tools)"}
 ]
 
-# Data katalog awal
-KATALOG_DEFAULT = [
-    {
-        "id": 1,
-        "judul": "Aplikasi Kasir POS & Manajer Stok Toko",
-        "kategori": "Bisnis",
-        "penawaran": "Sistem POS Kasir berbasis web modern untuk UMKM, warung, toko kelontong, atau kafe. Dilengkapi fitur cetak struk nota, manajemen stok otomatis dengan peringatan stok menipis, serta laporan omzet penjualan harian.",
-        "link_demo": "https://demo-pos-kasir-ten.vercel.app/",
-        "link_pesan": "https://wa.me/6281234567890"
-    }
-]
+# PERBAIKAN: Dibuat kosong agar jika dihapus tidak muncul otomatis lagi
+KATALOG_DEFAULT = []
 
 def load_json(filepath, default_value):
     if not os.path.exists(filepath):
@@ -133,7 +124,6 @@ def tambah_kotak():
 
         kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
         
-        # Generator ID berbasis Timestamp/Max ID unik
         new_id = max([k.get('id', 0) for k in kotaks], default=0) + 1
         
         new_item = {
