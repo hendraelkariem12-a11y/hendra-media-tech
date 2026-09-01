@@ -94,6 +94,13 @@ def tambah_kotak():
         json_result = json.dumps(kotaks, indent=2, ensure_ascii=False)
 
     return render_template('tambah.html', json_result=json_result)
+@app.route('/logo.png')
+def serve_logo_png():
+    return send_from_directory('static', 'logo.png')
+
+@app.route('/logo.jpg')
+def serve_logo_jpg():
+    return send_from_directory('static', 'logo.jpg')
 
 if __name__ == '__main__':
     app.run(debug=True)
