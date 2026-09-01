@@ -7,9 +7,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'hendra-media-tech-secret-key-2026'
 
-# Gunakan direktori /tmp/ khusus Vercel Serverless
-KATALOG_FILE = '/tmp/katalog.json'
-KATEGORI_FILE = '/tmp/kategori.json'
 
 # Kategori bawaan jika file belum ada
 KATEGORI_DEFAULT = [
