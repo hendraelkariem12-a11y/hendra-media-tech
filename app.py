@@ -7,8 +7,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'hendra-media-tech-secret-key-2026'
 
+KATALOG_FILE = '/tmp/katalog.json'
+KATEGORI_FILE = '/tmp/kategori.json'
 
-# Kategori bawaan jika file belum ada
 KATEGORI_DEFAULT = [
     {"id": "Pendidikan", "nama": "📚 Pendidikan & Literasi"},
     {"id": "Bisnis", "nama": "💼 Bisnis & Operasional UMKM"},
@@ -16,9 +17,7 @@ KATEGORI_DEFAULT = [
     {"id": "Tools", "nama": "🛠️ Alat Bantu & Otomasi (Tools)"}
 ]
 
-# PERBAIKAN: Dibuat kosong agar jika dihapus tidak muncul otomatis lagi
-KATALOG_DEFAULT = [
-    # Data katalog permanen (Tidak akan hilang walau Vercel di-reset)
+# Ditetapkan presisi sesuai request
 KATALOG_DEFAULT = [
     {
         "id": 1,
@@ -33,7 +32,7 @@ KATALOG_DEFAULT = [
         "judul": "Web Restoran / Cafe dengan Menu QR Code",
         "kategori": "Bisnis",
         "penawaran": "Pelanggan tinggal scan QR code di meja untuk lihat menu, pilih makanan, dan kirim pesanan otomatis ke WhatsApp kasir/dapur.",
-        "link_demo": "https://demo-menu-qr-resto.vercel.app/",  # Sesuaikan dengan link vercel demo resto milikmu
+        "link_demo": "https://demo-menu-qr-resto.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
     },
     {
@@ -41,25 +40,25 @@ KATALOG_DEFAULT = [
         "judul": "Web Pencatatan Utang & Keuangan Harian",
         "kategori": "Bisnis",
         "penawaran": "Pencatatan arus kas masuk/keluar harian, piutang pelanggan, serta fitur generate rekap laporan keuangan bulanan format PDF.",
-        "link_demo": "https://demo-buku-kas-hendra.vercel.app/", # Sesuaikan dengan link vercel demo buku kas milikmu
+        "link_demo": "https://demo-buku-kas-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
     }
 ]
 
-]
-
 def load_json(filepath, default_value):
     if not os.path.exists(filepath):
-        try:
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(default_value, f, ensure_ascii=False, indent=2)
-        except Exception:
-            pass
+        save_json(filepath, default_value)
         return default_value
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            data = json.load(f)
+            # Jika file kosong atau datanya lebih sedikit dari default bawaan, paksakan perbarui file /tmp/
+            if not data or (isinstance(data, list) and len(data) < len(default_value)):
+                save_json(filepath, default_value)
+                return default_value
+            return data
     except Exception:
+        save_json(filepath, default_value)
         return default_value
 
 def save_json(filepath, data):
@@ -72,9 +71,6 @@ def save_json(filepath, data):
 ADMIN_USER = "admin"
 ADMIN_PASS_HASH = generate_password_hash("hendra123")
 
-# ==================================================
-# ROUTE FILE LOGO / STATIC
-# ==================================================
 @app.route('/logo.jpg')
 def serve_logo_jpg():
     return send_from_directory('static', 'logo.jpg')
@@ -87,9 +83,6 @@ def serve_logo_png():
 def serve_static(filename):
     return send_from_directory('static', filename)
 
-# ==================================================
-# ROUTE UTAMA
-# ==================================================
 @app.route('/')
 def home():
     kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
@@ -149,7 +142,6 @@ def tambah_kotak():
         link_pesan = request.form.get('link_pesan', '').strip()
 
         kotaks = load_json(KATALOG_FILE, KATALOG_DEFAULT)
-        
         new_id = max([k.get('id', 0) for k in kotaks], default=0) + 1
         
         new_item = {
@@ -170,9 +162,6 @@ def tambah_kotak():
     kategori_list = load_json(KATEGORI_FILE, KATEGORI_DEFAULT)
     return render_template('tambah.html', json_result=json_result, kategori_list=kategori_list, kotaks_list=kotaks_list)
 
-# ==================================================
-# ROUTE HAPUS KOTAK LAYANAN
-# ==================================================
 @app.route('/admin/kotak/hapus/<int:kotak_id>', methods=['POST'])
 def hapus_kotak(kotak_id):
     if not session.get('is_admin'):
@@ -185,9 +174,6 @@ def hapus_kotak(kotak_id):
     flash('Kotak layanan berhasil dihapus!', 'info')
     return redirect(url_for('tambah_kotak'))
 
-# ==================================================
-# ROUTE KELOLA KATEGORI (TAMBAH & HAPUS)
-# ==================================================
 @app.route('/admin/kategori/tambah', methods=['POST'])
 def tambah_kategori():
     if not session.get('is_admin'):
@@ -219,9 +205,6 @@ def hapus_kategori(id_kat):
     
     return redirect(url_for('tambah_kotak'))
 
-# ==================================================
-# ROUTE BACKUP & RESTORE DATA (JSON)
-# ==================================================
 @app.route('/admin/backup/<pilihan>')
 def backup_data(pilihan):
     if not session.get('is_admin'):
