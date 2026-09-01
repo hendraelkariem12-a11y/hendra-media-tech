@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -39,8 +40,6 @@
             letter-spacing: 2px;
             font-weight: 700;
         }
-        
-        /* Banner Karya Unggulan (Ruang Literasi) */
         .showcase-card {
             background: linear-gradient(145deg, #1c2541, #0f172a);
             border: 2px solid var(--gold);
@@ -49,8 +48,6 @@
             position: relative;
             overflow: hidden;
         }
-
-        /* Container Scroll Ke Samping (Horizontal Slider) */
         .horizontal-scroll-container {
             display: flex;
             overflow-x: auto;
@@ -67,7 +64,7 @@
             border-radius: 10px;
         }
         .scroll-item {
-            flex: 0 0 85%; /* Di HP kelihatan 1 kotak + sedikit ujung kotak berikutnya */
+            flex: 0 0 85%;
             max-width: 340px;
             scroll-snap-align: start;
         }
@@ -76,7 +73,6 @@
                 flex: 0 0 320px;
             }
         }
-
         .card-kotak {
             background-color: var(--card-dark);
             border: 1px solid rgba(179, 135, 40, 0.3);
@@ -115,89 +111,99 @@
 </head>
 <body>
 
-    <!-- Header & Logo Induk -->
-    <div class="container py-4 text-center">
-        <img src="/logo.jpg" onerror="this.src='/logo.png'" alt="Hendra Media Tech" class="brand-logo mb-3">
-        <h1 class="brand-title h3 mb-1">HENDRA MEDIA TECH</h1>
-        <p class="small text-uppercase fw-bold mt-1" style="letter-spacing: 2px; color: #cbd5e1 !important;">
-            INNOVATIVE WEB SOLUTIONS & DIGITAL ECOSYSTEMS
-        </p>
-        
-        <hr class="border-secondary my-4" style="max-width: 250px; margin: 0 auto;">
+    <!-- Header & Navigasi Admin -->
+    <div class="container py-3">
+        <div class="d-flex justify-content-end mb-2">
+            {% if is_admin %}
+                <a href="/admin/tambah" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold me-2 text-dark">
+                    <i class="fa-solid fa-gear me-1"></i> Kelola Admin
+                </a>
+                <a href="/admin/logout" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+                </a>
+            {% else %}
+                <a href="/admin/login" class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-bold">
+                    <i class="fa-solid fa-lock me-1"></i> Admin Panel
+                </a>
+            {% endif %}
+        </div>
 
-        <!-- SECTION 1: PERKENALAN KARYA UNGGULAN (RUANG LITERASI) -->
-        <div class="showcase-card p-4 text-start mb-5">
-            <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
-                <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill"><i class="fa-solid fa-star me-1"></i> PORTAL KARYA UTAMA</span>
-                <small class="text-muted">Masterpiece Digital</small>
-            </div>
-            <h3 class="fw-bold text-warning mb-2" style="font-family:'Cinzel', serif;">📖 Ruang Literasi Hendra</h3>
-            <p class="small text-light mb-3" style="line-height: 1.6;">
-                Platform arsip digital resmi karya tulis, buku, jurnal refleksi, dan modul pembelajaran karya Dede Suhendra. Dilengkapi fitur PDF Reader, Text-to-Speech (Suara), dan Manajemen Naskah Terstruktur.
+        <div class="text-center">
+            <img src="/logo.jpg" onerror="this.src='/logo.png'" alt="Hendra Media Tech" class="brand-logo mb-3">
+            <h1 class="brand-title h3 mb-1">HENDRA MEDIA TECH</h1>
+            <p class="small text-uppercase fw-bold mt-1" style="letter-spacing: 2px; color: #cbd5e1 !important;">
+                INNOVATIVE WEB SOLUTIONS & DIGITAL ECOSYSTEMS
             </p>
-            <a href="https://web-catatan-buku-production.up.railway.app/" target="_blank" class="btn btn-gold btn-sm px-4">
-                <i class="fa-solid fa-book-open me-1"></i> Buka Ruang Literasi &rarr;
-            </a>
-        </div>
-
-        <!-- SECTION 2: TEKS PENAWARAN JASA -->
-        <div class="text-center mb-4">
-            <h4 class="fw-bold text-warning mb-1"><i class="fa-solid fa-store me-2"></i>Katalog Produk & Jasa Web</h4>
-            <p class="text-muted small">Dijual web dengan fitur menarik untuk memudahkan aktivitas dan bisnis kalian.</p>
-        </div>
-
-        <!-- SECTION 3: KATALOG PER KATEGORI (GESER KE SAMPING) -->
-        {% set kategori_list = [
-            {'nama': '📚 Pendidikan & Literasi', 'filter': 'Pendidikan'},
-            {'nama': '💼 Bisnis & Operasional UMKM', 'filter': 'Bisnis'},
-            {'nama': '🎉 Acara & Undangan Digital', 'filter': 'Acara'},
-            {'nama': '🛠️ Alat Bantu & Otomasi (Tools)', 'filter': 'Tools'}
-        ] %}
-
-        {% for kat in kategori_list %}
-        <div class="text-start mb-4">
-            <h5 class="fw-bold text-light mb-3 border-start border-warning border-3 ps-2">
-                {{ kat.nama }}
-            </h5>
             
-            <div class="horizontal-scroll-container">
-                {% set found = false %}
-                {% for k in kotaks %}
-                    {% if k.kategori == kat.filter or not k.kategori %}
-                    {% set found = true %}
-                    <div class="scroll-item">
-                        <div class="card card-kotak p-3">
-                            <div class="card-body d-flex flex-column p-0">
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid fa-cube text-warning fs-5 me-2"></i>
-                                    <h6 class="card-title text-warning fw-bold mb-0">{{ k.judul }}</h6>
-                                </div>
-                                <p class="card-text text-light small my-2 flex-grow-1" style="line-height: 1.5; font-size: 13px;">
-                                    {{ k.penawaran }}
-                                </p>
-                                <div class="mt-auto pt-2">
-                                    <a href="{{ k.link_demo }}" target="_blank" class="btn btn-outline-gold w-100 mb-2 btn-sm py-1" style="font-size: 12px;">
-                                        <i class="fa-solid fa-eye me-1"></i> Lihat Contoh (Demo)
-                                    </a>
-                                    {% if k.link_pesan %}
-                                    <a href="{{ k.link_pesan }}" target="_blank" class="btn btn-gold w-100 btn-sm py-1" style="font-size: 12px;">
-                                        <i class="fa-brands fa-whatsapp me-1"></i> Pesan / Gunakan Jasa
-                                    </a>
-                                    {% endif %}
+            <hr class="border-secondary my-4" style="max-width: 250px; margin: 0 auto;">
+
+            <!-- SECTION 1: PERKENALAN KARYA UNGGULAN -->
+            <div class="showcase-card p-4 text-start mb-5">
+                <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+                    <span class="badge bg-warning text-dark fw-bold px-3 py-2 rounded-pill"><i class="fa-solid fa-star me-1"></i> PORTAL KARYA UTAMA</span>
+                    <small class="text-muted">Masterpiece Digital</small>
+                </div>
+                <h3 class="fw-bold text-warning mb-2" style="font-family:'Cinzel', serif;">📖 Ruang Literasi Hendra</h3>
+                <p class="small text-light mb-3" style="line-height: 1.6;">
+                    Platform arsip digital resmi karya tulis, buku, jurnal refleksi, dan modul pembelajaran karya Dede Suhendra. Dilengkapi fitur PDF Reader, Text-to-Speech (Suara), dan Manajemen Naskah Terstruktur.
+                </p>
+                <a href="https://web-catatan-buku.up.railway.app" target="_blank" class="btn btn-gold btn-sm px-4">
+                    <i class="fa-solid fa-book-open me-1"></i> Buka Ruang Literasi &rarr;
+                </a>
+            </div>
+
+            <!-- SECTION 2: TEKS PENAWARAN JASA -->
+            <div class="text-center mb-4">
+                <h4 class="fw-bold text-warning mb-1"><i class="fa-solid fa-store me-2"></i>Katalog Produk & Jasa Web</h4>
+                <p class="text-muted small">Dijual web dengan fitur menarik untuk memudahkan aktivitas dan bisnis kalian.</p>
+            </div>
+
+            <!-- SECTION 3: KATALOG DINAMIS PER KATEGORI -->
+            {% for kat in kategori_list %}
+            <div class="text-start mb-4">
+                <h5 class="fw-bold text-light mb-3 border-start border-warning border-3 ps-2">
+                    {{ kat.nama }}
+                </h5>
+                
+                <div class="horizontal-scroll-container">
+                    {% set ns = namespace(found=false) %}
+                    {% for k in kotaks %}
+                        {% if k.kategori == kat.id %}
+                        {% set ns.found = true %}
+                        <div class="scroll-item">
+                            <div class="card card-kotak p-3">
+                                <div class="card-body d-flex flex-column p-0">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fa-solid fa-cube text-warning fs-5 me-2"></i>
+                                        <h6 class="card-title text-warning fw-bold mb-0">{{ k.judul }}</h6>
+                                    </div>
+                                    <p class="card-text text-light small my-2 flex-grow-1" style="line-height: 1.5; font-size: 13px;">
+                                        {{ k.penawaran }}
+                                    </p>
+                                    <div class="mt-auto pt-2">
+                                        <a href="{{ k.link_demo }}" target="_blank" class="btn btn-outline-gold w-100 mb-2 btn-sm py-1" style="font-size: 12px;">
+                                            <i class="fa-solid fa-eye me-1"></i> Lihat Contoh (Demo)
+                                        </a>
+                                        {% if k.link_pesan %}
+                                        <a href="{{ k.link_pesan }}" target="_blank" class="btn btn-gold w-100 btn-sm py-1" style="font-size: 12px;">
+                                            <i class="fa-brands fa-whatsapp me-1"></i> Pesan / Gunakan Jasa
+                                        </a>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not ns.found %}
+                    <div class="text-muted small fst-italic p-2">Belum ada layanan di kategori ini.</div>
                     {% endif %}
-                {% endfor %}
-
-                {% if not found %}
-                <div class="text-muted small fst-italic p-2">Belum ada layanan di kategori ini.</div>
-                {% endif %}
+                </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
 
+        </div>
     </div>
 
     <footer class="mt-auto py-3 text-center border-top border-secondary small text-muted">
