@@ -50,7 +50,7 @@ KATALOG_DEFAULT = [
         "penawaran": "Pencatatan arus kas masuk/keluar harian, piutang pelanggan, serta fitur generate rekap laporan keuangan bulanan format PDF.",
         "link_demo": "https://demo-buku-kas-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
-    }
+    },
         {
         "id": 5,
         "judul": "Web Undangan Pernikahan Digital & Akikah",
