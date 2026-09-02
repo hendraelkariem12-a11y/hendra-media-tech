@@ -14,7 +14,7 @@ KATEGORI_DEFAULT = [
     {"id": "Pendidikan", "nama": "📚 Pendidikan & Literasi"},
     {"id": "Bisnis", "nama": "💼 Bisnis & Operasional UMKM"},
     {"id": "Acara", "nama": "🎉 Acara & Undangan Digital"},
-    {"id": "Tools", "nama": "🛠️ Alat Bantu & Otomasi (Tools)"}
+    {"id": "Tools", "nama": "🛠️ Alat Bantu & Otomasi (Tools)"},
     {"id": "PMI", "nama": "📕Ekosistem Digital TKW"}
 ]
 
