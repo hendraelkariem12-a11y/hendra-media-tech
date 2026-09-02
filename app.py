@@ -58,7 +58,16 @@ KATALOG_DEFAULT = [
         "penawaran": "Fitur RSVP otomatis, ucapan selamat & doa, pemutar musik latar, fitur amplop digital (transfer/QRIS), dan penunjuk arah Google Maps.",
         "link_demo": "https://demo-undangan-digital-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
+    },
+        {
+        "id": 6,
+        "judul": "Web Registrasi & E-Tiket Event / Seminar",
+        "kategori": "Acara",
+        "penawaran": "Formulir pendaftaran acara dengan pembuatan E-ticket ber-QR code otomatis yang dikirim ke email/WhatsApp peserta.",
+        "link_demo": "https://demo-e-tiket-event-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
     }
+
 
 ]
 
