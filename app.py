@@ -82,9 +82,39 @@ KATALOG_DEFAULT = [
         "penawaran": "Pengelolaan koleksi buku digital, PDF Reader terintegrasi, fitur pencarian bab, serta fasilitas Text-to-Speech (membaca naskah jadi suara).",
         "link_demo": "https://demo-ebook-vault-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
+    },
+         {
+        "id": 10,
+        "judul": "Web Portal Proyek Masa Depan Keluarga PMI",
+        "kategori": "PMI",
+        "penawaran": "Platform transparansi penggunaan uang remitansi keluarga di Indonesia. Pemantauan progress proyek rumah, sawah, atau tabungan secara visual & terstruktur.",
+        "link_demo": "https://demo-tabungan-pmi-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
+    },
+    {
+        "id": 11,
+        "judul": "Ruang Curhat & Support System Komunitas PMI",
+        "kategori": "PMI",
+        "penawaran": "Forum anonim aman untuk berbagi cerita, konseling emosional, informasi hukum/pekerjaan, serta kontak darurat KBRI/pendampingan di luar negeri.",
+        "link_demo": "https://demo-curhat-pmi-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
+    },
+    {
+        "id": 12,
+        "judul": "Portal Purna PMI: Siap Pulang & Berdaya",
+        "kategori": "PMI",
+        "penawaran": "Modul pelatihan keterampilan bisnis praktis (baking, tani, jahit) dilengkapi fitur Text-to-Speech (bisa didengar) & jejaring mentor purna-TKW sukses.",
+        "link_demo": "https://demo-purna-pmi-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
+    },
+    {
+        "id": 13,
+        "judul": "Web Asisten Urusan Keluarga di Kampung",
+        "kategori": "PMI",
+        "penawaran": "Layanan pemesanan jasa terpercaya untuk membantu mengurus dokumen, pembelian kebutuhan, atau acara keluarga di Indonesia dengan laporan bukti foto/video.",
+        "link_demo": "https://demo-asisten-keluarga-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
     }
-
-
 
 
 ]
