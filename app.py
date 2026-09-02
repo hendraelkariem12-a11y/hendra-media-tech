@@ -51,6 +51,15 @@ KATALOG_DEFAULT = [
         "link_demo": "https://demo-buku-kas-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
     }
+        {
+        "id": 5,
+        "judul": "Web Undangan Pernikahan Digital & Akikah",
+        "kategori": "Acara",
+        "penawaran": "Fitur RSVP otomatis, ucapan selamat & doa, pemutar musik latar, fitur amplop digital (transfer/QRIS), dan penunjuk arah Google Maps.",
+        "link_demo": "https://demo-undangan-digital-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
+    }
+
 ]
 
 def load_json(filepath, default_value):
