@@ -74,7 +74,16 @@ KATALOG_DEFAULT = [
         "penawaran": "Pendataan anggota, direktori kontak alumni, agenda kegiatan, dan galeri dokumentasi foto acara.",
         "link_demo": "https://demo-alumni-komunitas-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
+    },
+        {
+        "id": 8,
+        "judul": "Web Pustaka Digital & Manajer Naskah (E-Book Vault)",
+        "kategori": "Pendidikan",
+        "penawaran": "Pengelolaan koleksi buku digital, PDF Reader terintegrasi, fitur pencarian bab, serta fasilitas Text-to-Speech (membaca naskah jadi suara).",
+        "link_demo": "https://demo-ebook-vault-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
     }
+
 
 
 
