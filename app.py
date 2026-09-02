@@ -66,7 +66,16 @@ KATALOG_DEFAULT = [
         "penawaran": "Formulir pendaftaran acara dengan pembuatan E-ticket ber-QR code otomatis yang dikirim ke email/WhatsApp peserta.",
         "link_demo": "https://demo-e-tiket-event-hendra.vercel.app/",
         "link_pesan": "https://wa.me/6282122900593"
+    },
+        {
+        "id": 7,
+        "judul": "Web Reuni, Alumnus & Database Anggota Komunitas",
+        "kategori": "Acara",
+        "penawaran": "Pendataan anggota, direktori kontak alumni, agenda kegiatan, dan galeri dokumentasi foto acara.",
+        "link_demo": "https://demo-alumni-komunitas-hendra.vercel.app/",
+        "link_pesan": "https://wa.me/6282122900593"
     }
+
 
 
 ]
