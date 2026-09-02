@@ -15,6 +15,7 @@ KATEGORI_DEFAULT = [
     {"id": "Bisnis", "nama": "💼 Bisnis & Operasional UMKM"},
     {"id": "Acara", "nama": "🎉 Acara & Undangan Digital"},
     {"id": "Tools", "nama": "🛠️ Alat Bantu & Otomasi (Tools)"}
+    {"id": "PMI", "nama": "📕Ekosistem Digital TKW"}
 ]
 
 # Ditetapkan presisi sesuai request
